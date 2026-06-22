@@ -5,9 +5,10 @@ void rodar_experimento(int c) {
     int *vetor = (int *)malloc(N * sizeof(int));
     srand(42);
     
-    if(c == 1) gerarVetorAleatorio(vetor, N);
-    if(c == 2) gerarVetorOrdenado(vetor, N);
-    if(c == 3) gerarVetorInverso(vetor, N);
+    char *nome_cenario;
+    if(c == 1) { gerarVetorAleatorio(vetor, N); nome_cenario = "Aleatorio"; }
+    else if(c == 2) { gerarVetorOrdenado(vetor, N); nome_cenario = "Ordenado"; }
+    else { gerarVetorInverso(vetor, N); nome_cenario = "Inverso"; }
 
     struct timespec inicio, fim;
     Metricas m;
@@ -17,13 +18,12 @@ void rodar_experimento(int c) {
     clock_gettime(CLOCK_MONOTONIC, &fim);
 
     m.tempo_segundos = (fim.tv_sec - inicio.tv_sec) + (fim.tv_nsec - inicio.tv_nsec) / 1e9;
-    printf("Cenario %d -> Tempo: %f s | Comp: %llu | Trocas: %llu\n", c, m.tempo_segundos, m.comparacoes, m.trocas);
+    printf("Bubblesort,%s,%f,%llu,%llu\n", nome_cenario, m.tempo_segundos, m.comparacoes, m.trocas);
     
     free(vetor);
 }
 
 int main() {
-    printf("--- BUBBLE SORT EXP 1 ---\n");
     rodar_experimento(1); // Aleatório
     rodar_experimento(2); // Ordenado
     rodar_experimento(3); // Inverso

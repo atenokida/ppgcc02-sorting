@@ -2,7 +2,6 @@
 #include <math.h>
 
 int main() {
-    printf("--- HEAP SORT EXP 2 (N=5000 Vetor Ordenado) ---\n");
     int N = 5000;
     double tempos[10];
     double soma = 0, media = 0, desvio = 0;
@@ -31,11 +30,10 @@ int main() {
     for (int i = 0; i < 10; i++) {
         desvio += pow(tempos[i] - media, 2);
     }
-    desvio = sqrt(desvio / 10);
+    desvio = sqrt(desvio / 9.0);
 
-    printf("Resultados (Media de 10 execucoes):\n");
-    printf("Tempo Medio: %f s (Desvio Padrao: %f)\n", media, desvio);
-    printf("Comparacoes: %llu | Trocas: %llu\n", m_total.comparacoes, m_total.trocas);
+    // Formato CSV para o Problema 2: Algoritmo,Cenario,TempoMedio,DesvioPadrao,Comparacoes,Trocas
+    printf("Heapsort,Ordenado (Media),%f,%f,%llu,%llu\n", media, desvio, m_total.comparacoes, m_total.trocas);
 
     return 0;
 }

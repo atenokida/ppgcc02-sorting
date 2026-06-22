@@ -4,6 +4,7 @@ LIBS     := -lm
 
 SRC_DIR  := .
 BIN_DIR  := ../bin
+DATA_DIR := ../data
 
 ALGORITMOS := bubblesort heapsort insertionsort quicksort selectionsort shellsort
 
@@ -31,6 +32,20 @@ $(ALGORITMOS): $(BIN_DIR)
 
 .PHONY: clean
 clean:
-	@echo "Limpando os binários executáveis..."
+	@echo "Limpando os binários executáveis e os dados gerados..."
 	@rm -rf $(BIN_DIR)
+	@rm -rf $(DATA_DIR)
 	@echo "Projeto limpo com sucesso!"
+
+$(DATA_DIR):
+	@mkdir -p $(DATA_DIR)
+
+.PHONY: run
+run: all $(DATA_DIR)
+	@echo "Executando os algoritmos de ordenação e gerando o relatório..."
+	@> $(DATA_DIR)/resultados_gerais.csv
+	@for alg in $(ALGORITMOS); do \
+		echo "Rodando $$alg..."; \
+		$(BIN_DIR)/$$alg >> $(DATA_DIR)/resultados_gerais.csv; \
+	done
+	@echo "Finalizado! Verifique o arquivo $(DATA_DIR)/resultados_gerais.csv"
