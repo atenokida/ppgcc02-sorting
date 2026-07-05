@@ -1,0 +1,3 @@
+Algoritmo,Cenario,Tempo Medio (s),Desvio Padrao (s),Comparacoes,Trocas
+Heapsort,Ordenado,0.000228,0.000029,112126,60932
+Quicksort,Ordenado,0.007215,0.000040,12497500,12502499

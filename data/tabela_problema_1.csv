@@ -1,0 +1,10 @@
+Algoritmo,Cenario,Tempo (s),Comparacoes,Trocas
+Bubblesort,Aleatorio,0.441074,449897368,225667291
+Bubblesort,Ordenado,0.000020,29999,0
+Bubblesort,Inverso,0.340897,449985000,449985000
+Insertionsort,Aleatorio,0.109830,225697282,225667291
+Insertionsort,Ordenado,0.000037,29999,0
+Insertionsort,Inverso,0.219715,449985000,449985000
+Selectionsort,Aleatorio,0.147405,449985000,29992
+Selectionsort,Ordenado,0.144050,449985000,0
+Selectionsort,Inverso,0.179893,449985000,15000

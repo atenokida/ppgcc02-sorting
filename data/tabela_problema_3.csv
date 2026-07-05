@@ -1,0 +1,3 @@
+Algoritmo,Cenario,Tempo (s),Comparacoes,Trocas
+Insertionsort,Quase Ordenado,0.000080,50247,248
+Shellsort,Quase Ordenado,0.000667,700254,248
