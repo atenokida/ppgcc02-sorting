@@ -2,6 +2,12 @@ CC       := gcc
 CFLAGS   := -Wall -Wextra -O3 -std=gnu99
 LIBS     := -lm
 
+ifeq ($(OS),Windows_NT)
+    LDFLAGS := -Wl,--stack,67108864
+else
+    LDFLAGS :=
+endif
+
 SRC_DIR  := .
 BIN_DIR  := ../bin
 DATA_DIR := ../data
@@ -18,13 +24,9 @@ all: $(BIN_DIR) $(EXECUTABLES)
 $(BIN_DIR):
 	@mkdir -p $(BIN_DIR)
 
-$(BIN_DIR)/%: $(SRC_DIR)/%/main.c $(SRC_DIR)/%/%..c $(SRC_DIR)/ordenacao.c
-	@echo "Compilando o executável para: $*..."
-	@$(CC) $(CFLAGS) $^ -o $@ $(LIBS)
-
 $(BIN_DIR)/%: $(SRC_DIR)/%/main.c $(SRC_DIR)/%/*.c $(SRC_DIR)/ordenacao.c
 	@echo "Compilando o executável para: $*..."
-	@$(CC) $(CFLAGS) $^ -o $@ $(LIBS)
+	@$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS) $(LIBS)
 
 .PHONY: $(ALGORITMOS)
 $(ALGORITMOS): $(BIN_DIR)

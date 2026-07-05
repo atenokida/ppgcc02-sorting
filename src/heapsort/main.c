@@ -1,14 +1,21 @@
 #include "heapsort.h"
 #include <math.h>
 
-int main() {
+int main(int argc, char *argv[]) {
     int N = 5000;
+    if (argc > 1) {
+        N = atoi(argv[1]);
+    }
     double tempos[10];
     double soma = 0, media = 0, desvio = 0;
     Metricas m_total = {0, 0, 0};
 
     for (int i = 0; i < 10; i++) {
         int *vetor = (int *)malloc(N * sizeof(int));
+        if (vetor == NULL) {
+            fprintf(stderr, "Erro de alocação de memória.\n");
+            return 1;
+        }
         gerarVetorOrdenado(vetor, N);
 
         struct timespec inicio, fim;

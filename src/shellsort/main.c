@@ -1,8 +1,15 @@
 #include "shellsort.h"
 
-int main() {
+int main(int argc, char *argv[]) {
     int N = 50000;
+    if (argc > 1) {
+        N = atoi(argv[1]);
+    }
     int *vetor = (int *)malloc(N * sizeof(int));
+    if (vetor == NULL) {
+        fprintf(stderr, "Erro de alocação de memória.\n");
+        return 1;
+    }
     srand(42);
     
     gerarVetorQuaseOrdenado(vetor, N);

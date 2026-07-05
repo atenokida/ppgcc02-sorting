@@ -1,8 +1,8 @@
 #include "bubblesort.h"
 
-void rodar_experimento(int c) {
-    int N = 30000;
+void rodar_experimento(int c, int N) {
     int *vetor = (int *)malloc(N * sizeof(int));
+    if (vetor == NULL) return;
     srand(42);
     
     char *nome_cenario;
@@ -23,9 +23,21 @@ void rodar_experimento(int c) {
     free(vetor);
 }
 
-int main() {
-    rodar_experimento(1); // Aleatório
-    rodar_experimento(2); // Ordenado
-    rodar_experimento(3); // Inverso
+int main(int argc, char *argv[]) {
+    int N = 30000;
+    if (argc > 1) {
+        N = atoi(argv[1]);
+    }
+    
+    if (argc > 2) {
+        int c = atoi(argv[2]);
+        if (c >= 1 && c <= 3) {
+            rodar_experimento(c, N);
+        }
+    } else {
+        rodar_experimento(1, N); // Aleatório
+        rodar_experimento(2, N); // Ordenado
+        rodar_experimento(3, N); // Inverso
+    }
     return 0;
 }
