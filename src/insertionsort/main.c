@@ -2,6 +2,7 @@
 
 void rodar_experimento(int c, int n, int e) {
     int *vetor = (int *)malloc(n * sizeof(int));
+    if (vetor == NULL) return;
     srand(42);
     char *nome_cenario;
     
@@ -26,11 +27,26 @@ void rodar_experimento(int c, int n, int e) {
     free(vetor);
 }
 
-int main() {
-    rodar_experimento(1, 30000, 1);
-    rodar_experimento(2, 30000, 1);
-    rodar_experimento(3, 30000, 1);
+int main(int argc, char *argv[]) {
+    int N = 30000;
+    if (argc > 1) {
+        N = atoi(argv[1]);
+    }
     
-    rodar_experimento(4, 50000, 3);
+    if (argc > 2) {
+        int c = atoi(argv[2]);
+        if (c >= 1 && c <= 3) {
+            rodar_experimento(c, N, 1);
+        } else if (c == 4) {
+            rodar_experimento(4, N, 3);
+        }
+    } else {
+        rodar_experimento(1, N, 1);
+        rodar_experimento(2, N, 1);
+        rodar_experimento(3, N, 1);
+        
+        int n_problema3 = (argc > 1) ? N : 50000;
+        rodar_experimento(4, n_problema3, 3);
+    }
     return 0;
 }
