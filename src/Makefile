@@ -1,7 +1,9 @@
 CC       := gcc
-CFLAGS   := -Wall -Wextra -O3 -std=gnu99
+# A flag -I./include é essencial para encontrar os cabeçalhos (.h)
+CFLAGS   := -Wall -Wextra -O3 -std=gnu99 -I./include
 LIBS     := -lm
 
+# Aumenta a pilha nativamente se a compilação for no Windows
 ifeq ($(OS),Windows_NT)
     LDFLAGS := -Wl,--stack,67108864
 else
@@ -12,42 +14,47 @@ SRC_DIR  := .
 BIN_DIR  := ../bin
 DATA_DIR := ../data
 
-ALGORITMOS := bubblesort heapsort insertionsort quicksort selectionsort shellsort
+# Define o nome do executável final
+EXEC := $(BIN_DIR)/programa
 
-EXECUTABLES := $(addprefix $(BIN_DIR)/, $(ALGORITMOS))
+# Lista de todos os códigos-fonte necessários para o main central
+SRCS := $(SRC_DIR)/main.c \
+        $(SRC_DIR)/ordenacao/ordenacao.c \
+        $(SRC_DIR)/bubblesort/bubblesort.c \
+        $(SRC_DIR)/heapsort/heapsort.c \
+        $(SRC_DIR)/insertionsort/insertionsort.c \
+        $(SRC_DIR)/quicksort/quicksort.c \
+        $(SRC_DIR)/selectionsort/selectionsort.c \
+        $(SRC_DIR)/shellsort/shellsort.c
 
-all: $(BIN_DIR) $(EXECUTABLES)
+.PHONY: all clean run
+
+all: $(BIN_DIR) $(DATA_DIR) $(EXEC)
 	@echo "=================================================================="
-	@echo " Todos os 6 algoritmos de ordenação foram compilados em '$(BIN_DIR)'!"
+	@echo " Compilação concluída! Executável gerado em '$(EXEC)'"
 	@echo "=================================================================="
 
 $(BIN_DIR):
 	@mkdir -p $(BIN_DIR)
 
-$(BIN_DIR)/%: $(SRC_DIR)/%/main.c $(SRC_DIR)/%/*.c $(SRC_DIR)/ordenacao.c
-	@echo "Compilando o executável para: $*..."
-	@$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS) $(LIBS)
-
-.PHONY: $(ALGORITMOS)
-$(ALGORITMOS): $(BIN_DIR)
-	@$(MAKE) $(BIN_DIR)/$@
-
-.PHONY: clean
-clean:
-	@echo "Limpando os binários executáveis e os dados gerados..."
-	@rm -rf $(BIN_DIR)
-	@rm -rf $(DATA_DIR)
-	@echo "Projeto limpo com sucesso!"
-
 $(DATA_DIR):
 	@mkdir -p $(DATA_DIR)
 
-.PHONY: run
-run: all $(DATA_DIR)
-	@echo "Executando os algoritmos de ordenação e gerando o relatório..."
-	@> $(DATA_DIR)/resultados_gerais.csv
-	@for alg in $(ALGORITMOS); do \
-		echo "Rodando $$alg..."; \
-		$(BIN_DIR)/$$alg >> $(DATA_DIR)/resultados_gerais.csv; \
-	done
-	@echo "Finalizado! Verifique o arquivo $(DATA_DIR)/resultados_gerais.csv"
+# Regra para compilar o executável central unindo todos os .c
+$(EXEC): $(SRCS)
+	@echo "Compilando o projeto unificado..."
+	@$(CC) $(CFLAGS) $^ -o $@ $(LDFLAGS) $(LIBS)
+
+clean:
+	@echo "Limpando os binários executáveis e os dados gerados..."
+	@rm -rf $(BIN_DIR)
+	@echo "Projeto limpo com sucesso!"
+
+run: all
+	@echo "Aumentando o limite da pilha de execução (Linux/Mac)..."
+	@ulimit -s unlimited 2>/dev/null || true
+	@echo "Executando todos os experimentos..."
+	@# O comando cd garante que o executável rode a partir da raiz 
+	@# ou da pasta correta caso use caminhos relativos para os arquivos .csv
+	@cd .. && ./bin/programa
+	@echo "Finalizado! Verifique a pasta data/ para ver os arquivos gerados."
