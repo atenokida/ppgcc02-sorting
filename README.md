@@ -61,7 +61,7 @@ make clean
 
 ---
 
-## 🏃 Como Executar os Algoritmos
+## Como Executar os Algoritmos
 
 ### Execução Individual (Manual)
 
